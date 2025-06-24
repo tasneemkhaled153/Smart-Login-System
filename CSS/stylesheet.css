@@ -1,180 +1,36 @@
 body {
-    background-color: #f7e7d2;
-    padding: 30px;
-}
-
-.container {
+    font-family: Pacifico;
+    padding: 40px;
+    background-color: #f2f2f2;
     text-align: center;
-}
-
-h1 {
-    font-family: 'Pacifico', cursive;
-    font-size: 3.5em;
-    color: #000000;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-h1::before{
-    content: "";
-    position: absolute;
-    width: 30%;
-    height: 30%;
-    left: 50%;
-    bottom: 0px;
-    transform: translateX(-50%);
-    background-color: rgb(254, 194, 96);
-    z-index: -1;
-}
-
-h1:hover::before{
-    height: 60%;
-    transition: all 0.5s ease;
-}
-
-.divider {
-    border-top: 2px dotted #000000;
-    margin: 30px 0;
-}
-
-.section-title {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: center;  
     justify-content: center;
-    margin-bottom: 30px;
 }
 
-.section-title i {
-    color: #4CAF50;
-    font-size: 1.8em;
-    margin: 0 10px;
+.form-container {
+    margin: 40px auto;
+    padding: 40px;
+    background: rgb(178, 90, 90);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.393);
+    min-width: 50%;
 }
 
-.section-title h2 {
-    color: #4CAF50;
-    font-size: 1.8em;
-    margin: 0;
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
 }
 
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
+button {
+    padding: 10px 30px;
+    margin: 10px 0;
+    background-color: #000000;
+    color: #ffffff;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #000000;
-}
-
-.form-group label i {
-    margin-right: 8px;
-    color: #000000;
-}
-
-.form-group input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 12px 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
-
-.form-group input[type="text"]:focus {
-    border-color: #ff9800;
-    box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
-    outline: none;
-}
-
-.submit-btn,
-.delete-btn,
-.visit-btn {
-    padding: 10px 40px;
-    font-size: 14px;
-    border-radius: 5px;
+a {
     cursor: pointer;
 }
-
-.submit-btn {
-    background-color: #c0b215; 
-    color: white;
-}
-
-.submit-btn:hover {
-    background-color: #a89f0c; 
-    transition: background-color 0.3s ease;
-}
-
-.delete-btn {
-    background-color: #03d731;
-    color: white;
-}
-
-.delete-btn:hover {
-    background-color: #02b72a; 
-    transition: background-color 0.3s ease;
-}
-
-.visit-btn {
-    background-color: #dc3545; 
-    color: white;
-}
-
-.visit-btn:hover {
-    background-color: #c82333; 
-    transition: background-color 0.3s ease;
-}
-
-table {
-    width: 100%;
-    margin-top: 20px;
-}
-table thead {
-    background-color: #f2f2f2; 
-    font-weight: bold;
-    color: #333; 
-    text-align: center;
-    border: 1px solid #ddd;
-    padding: 20px 20px;
-}
-
-table td {
-
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 12px 10px;
-}
-
-
-
-@media (max-width: 600px) {
-    .container {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 2.5em;
-    }
-
-    .section-title h2 {
-        font-size: 1.5em;
-    }
-
-    .form-group input[type="text"] {
-        width: calc(100% - 15px);
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 15px;
-    }
-
-    table th,
-    table td {
-        padding: 8px 10px;
-        font-size: 0.85em;
-    }
-} 

@@ -1,111 +1,111 @@
-document.addEventListener("DOMContentLoaded", function () {
-  let siteNameInput = document.getElementById("siteName");
-  let siteUrlInput = document.getElementById("siteURL");
-  let tableBody = document.getElementById("bookmarksTableBody");
-  let entries = [];
+function getUsers() {
+  return JSON.parse(localStorage.getItem('users')) || [];
+}
 
-  if (localStorage.getItem("entries")) {
-    entries = JSON.parse(localStorage.getItem("entries"));
+function saveUser(user) {
+  let users = getUsers();
+  users.push(user);
+  localStorage.setItem('users', JSON.stringify(users));
+}
+
+// Show register form, hide others
+function showRegister() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'block';
+  document.getElementById('homePage').style.display = 'none';
+}
+
+// Show login form, hide others
+function showLogin() {
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('homePage').style.display = 'none';
+}
+
+// Handle registration
+function handleRegister() {
+  let name = document.getElementById('regName').value.trim();
+  let email = document.getElementById('regEmail').value.trim().toLowerCase();
+  let password = document.getElementById('regPassword').value;
+
+  if (!name || !email || !password) {
+    alert("Please fill all fields.");
+    return;
   }
 
-  if (tableBody && entries.length > 0) {
-    displayEntries();
+  let users = getUsers();
+
+  let userExists = users.some(u => u.email === email);
+
+  if (userExists) {
+    alert("This email is already registered!");
+    return;
   }
 
-  document.getElementById("bookmarkForm").addEventListener("submit", function (e) 
-  {e.preventDefault();
+  saveUser({ name, email, password });
+  alert("Registration successful! You can now log in.");
+  showLogin();
+}
 
-      if (validationName() && validationUrl()) {
-        createElement();
-      }
-    });
+// Handle login
+function handleLogin() {
+  let email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  let password = document.getElementById('loginPassword').value;
 
-  function clearInputs() {
-    siteNameInput.value = "";
-    siteUrlInput.value = "";
+  if (!email || !password) {
+    alert("Please enter both email and password.");
+    return;
   }
 
-  function displayEntries() {
-    if (!tableBody) return;
-    tableBody.innerHTML = "";
+  let users = getUsers();
+  let user = users.find(u => u.email === email && u.password === password);
 
-    for (let i = 0; i < entries.length; i++) {
-      let entry = entries[i];
-
-      let row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${i + 1}</td>
-        <td>${entry.name}</td>
-          <td><button class="visit-btn" onclick="visitUrl('${
-            entry.url
-          }')">Visit</button></td>
-            <td><button class="delete-btn" onclick="deleteEntry(${i})">Delete</button></td>
-    `;
-
-      tableBody.appendChild(row);
-    }
+  if (!user) {
+    alert("Invalid email or password.");
+    return;
   }
 
-  function createElement() {
-    entries.push({
-      name: siteNameInput.value,
-      url: siteUrlInput.value,
-    });
-    localStorage.setItem("entries", JSON.stringify(entries));
-    clearInputs();
-    displayEntries();
-  }
+  // Show home page
+  document.getElementById('displayName').textContent = user.name;
+  document.getElementById('homePage').style.display = 'block';
 
-  window.deleteEntry = function (index) {
-    entries.splice(index, 1);
-    localStorage.setItem("entries", JSON.stringify(entries));
-    displayEntries();
-  };
+  // Hide forms
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'none';
+}
 
-  function validationName() {
-    let name = siteNameInput.value.trim();
-    let isValid = name.length >= 3;
+// Handle logout
+function handleLogout() {
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
+}
 
-    if (isValid) {
-      siteNameInput.classList.add("is-valid");
-      siteNameInput.classList.remove("is-invalid");
-      document.getElementById("msgName").classList.add("d-none");
-    } else {
-      siteNameInput.classList.add("is-invalid");
-      siteNameInput.classList.remove("is-valid");
-      document.getElementById("msgName").classList.remove("d-none");
-    }
+// Event listeners
+document.addEventListener('DOMContentLoaded', function () {
+  // Buttons
+  let registerBtn = document.getElementById('registerBtn');
+  let loginBtn = document.getElementById('loginBtn');
+  let logoutBtn = document.getElementById('logoutBtn');
 
-    return isValid;
-  }
+  let goToRegisterLink = document.getElementById('goToRegister');
+  let goToLoginLink = document.getElementById('goToLogin');
 
-  function validationUrl() {
-    const url = siteUrlInput.value.trim();
-    const isValid = isValidUrl(url);
+  // Attach events
+  registerBtn.addEventListener('click', handleRegister);
+  loginBtn.addEventListener('click', handleLogin);
+  logoutBtn.addEventListener('click', handleLogout);
 
-    if (isValid) {
-      siteUrlInput.classList.add("is-valid");
-      siteUrlInput.classList.remove("is-invalid");
-      document.getElementById("msgUrl").classList.add("d-none");
-    } else {
-      siteUrlInput.classList.add("is-invalid");
-      siteUrlInput.classList.remove("is-valid");
-      document.getElementById("msgUrl").classList.remove("d-none");
-    }
+  goToRegisterLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    showRegister();
+  });
 
-    return isValid;
-  }
+  goToLoginLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    showLogin();
+  });
 
-  function isValidUrl(string) {
-    try {
-      const url = new URL(string);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-window.visitUrl = function(url) {
-        window.open(url, '_blank');
-    }
+  // Default view
+  showLogin();
 });
